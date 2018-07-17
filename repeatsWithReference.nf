@@ -101,3 +101,10 @@ maskFastaFromBed -fi genome.fasta -bed tmp.bed -fo ${sampleID}.masked.soft.fasta
 maskFastaFromBed -fi genome.fasta -bed tmp.bed -fo ${sampleID}.masked.hard.fasta
   """
 }
+
+workflow.onComplete {
+    log.info "========================================================"
+    log.info "Pipeline completed at: $workflow.complete"
+    log.info "Execution status: ${ workflow.success ? 'OK' : 'Failed' }"
+    log.info "========================================================"
+}
