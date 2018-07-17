@@ -22,9 +22,9 @@ params.minRepLength = 250
 reference = file(params.reference)
 
 //Creating a channel containing all the sequences we want masked
-sequences = Channel.fromPath(params.input)
-sequences
-.map{[it.getBaseName(),it]}
+sequences = Channel
+.fromPath(params.input)
+.map{[it.getBaseName(), it]}
 .set{genomes}
 
 log.info "====================================================================="
