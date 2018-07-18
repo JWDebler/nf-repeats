@@ -24,7 +24,7 @@ reference = file(params.reference)
 //Creating a channel containing all the sequences we want masked
 sequences = Channel
 .fromPath(params.input)
-.map{[it.getBaseName(), it]}
+.map{ file -> tuple(file.simpleName, file)}
 .set{genomes}
 
 log.info "====================================================================="
