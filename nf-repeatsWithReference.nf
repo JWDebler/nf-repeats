@@ -5,13 +5,13 @@
 //repeats in the genomes we feed it through the input directory
 
 //+++++++++++++++++ SETUP++++++++++++++++++++++++
-params.workdir = "/home/johannes/rdrive/PPG_SEQ_DATA-LICHTJ-SE00182/johannes/notebook/bcinerea_test"
+params.workdir = "/home/johannes/rdrive/PPG_SEQ_DATA-LICHTJ-SE00182/johannes/notebook/2018-05-14-Botrytis_github"
 
 //Reference genome fasta file
 params.reference = "${params.workdir}/reference/*.fasta"
 
 //Folder containing fasta files of genomes to be masked
-params.input = "${params.workdir}/input/*.fasta"
+params.input = "${params.workdir}/input/*clean.fasta"
 
 params.outdir = "${params.workdir}/output"
 
@@ -90,12 +90,12 @@ process removeShortMatches {
   set sampleID, "rm.out", 'genome.fasta' from repeatmaskerout
   
   output:
-  set sampleID, "${sampleID}.out", "${sampleID}*fasta" into repeatMaskerKnowns
+  set sampleID, "${sampleID}.repeats.out", "${sampleID}*fasta" into repeatMaskerKnowns
 
 
   """
-head -n 3 rm.out > ${sampleID}.out
-tail -n +4 rm.out | awk '\$7 - \$6 > ${params.minRepLength}' >> ${sampleID}.out
+head -n 3 rm.out > ${sampleID}.repeats.out
+tail -n +4 rm.out | awk '\$7 - \$6 > ${params.minRepLength}' >> ${sampleID}.repeats.out
 tail -n +4 rm.out | awk 'BEGIN{OFS="\\t"} \$7 - \$6 > ${params.minRepLength} {print \$5, \$6, \$7}' >> tmp.bed
 maskFastaFromBed -fi genome.fasta -bed tmp.bed -fo ${sampleID}.masked.soft.fasta -soft
 maskFastaFromBed -fi genome.fasta -bed tmp.bed -fo ${sampleID}.masked.hard.fasta
